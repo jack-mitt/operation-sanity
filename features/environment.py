@@ -18,6 +18,8 @@ default_screenshot_dir = os.path.join(WORKSPACE_ROOT, 'reports/screenshots')
 SCREENSHOT_DIR = os.environ['SANITYSCREENSHOTDIR'] if os.environ.get('SANITYSCREENSHOTDIR') \
     else os.path.join(WORKSPACE_ROOT, 'reports/screenshots')
 
+PERSONAS = {}
+
 
 def before_all(context):
     benv.before_all(context)
@@ -120,8 +122,11 @@ def after_feature(context, feature):
 
 
 def before_scenario(context, scenario):
+    print('before_scenario HERE!')
     if 'persist_browser' not in scenario.tags:
         benv.before_scenario(context, scenario)
+    context.personas = PERSONAS
+    context.single_browser = True
 
 
 def after_scenario(context, scenario):

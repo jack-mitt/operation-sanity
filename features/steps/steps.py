@@ -2,7 +2,7 @@ from behave import *
 from behaving.mail.steps import *
 from behaving.web.steps import *
 from behaving.web.steps.basic import _retry
-
+from behaving.personas.steps import *
 APPLICATION_BACKDOOR = '/application_backdoor'
 
 
@@ -412,3 +412,56 @@ def step_impl(context):
                 chosen_runtime_tags
             )
         )
+
+
+@step("I do my own ping with the ip address at xpath {xpath}")
+def ping_ip(context, xpath):
+    import subprocess
+    ip_address = context.browser.find_by_xpath(xpath)
+    assert ip_address, u'Element not found'
+    ip_address = ip_address.first.text
+    res = subprocess.call(['ping', '-c', '3', ip_address])
+    if res == 0:
+        print("ping to " + ip_address + " OK")
+    elif res == 2:
+        print("no response from " + ip_address)
+    else:
+        print("ping to " + ip_address + " failed")
+
+
+@step("I ssh to the ip address at xpath {xpath} with port {port}")
+def ssh_to_instance(context, xpath, port):
+    import paramiko
+    ip_address = context.browser.find_by_xpath(xpath)
+    assert ip_address, u'Element not found'
+    ip_address = ip_address.first.text
+    client = paramiko.client.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.load_system_host_keys()
+    client.connect(ip_address, port, os.environ.get('SANITYUSER'), os.environ.get('SANITYPASS'))
+
+    assert client.get_transport().is_active() is True
+    try:
+        transport = client.get_transport()
+        transport.send_ignore()
+    except EOFError as e:
+        print("connection not open")
+    client.close()
+
+
+@step("I close all other tabs")
+def close_other_tabs(context):
+    context.browser.windows.current.close_others()
+
+
+@step("Switch to the new tab")
+def switch_to_new_tab(context):
+    context.browser.windows.current = context.browser.windows.current.next
+
+
+@step("I close the current tab")
+def close_current_tab(context):
+    context.browser.windows.current.close()
+
+
+

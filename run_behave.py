@@ -171,17 +171,17 @@ def run_behave_tests(dict_args):
     if dict_args['junit']:
         behave_test_command += ["--junit", "--junit-directory ./reports"]
     behave_test_command += ['--tags',
-        "@persist_browser,@%s" % dict_args["environment"]]
+        "@wip,@persist_browser,@%s" % dict_args["environment"]]
     behave_test_command += [
         dict_args["feature"]
     ]
     # But behave doesnt work that way :)
     behave_test_command = " ".join(behave_test_command)
-    print "Executing Command: %s" % behave_test_command
+    print("Executing Command: %s" % behave_test_command)
     proc = Popen(behave_test_command, shell=True, env=script_environ)
     returncode = proc.wait()
     if returncode != 0:
-        print "Warning: Behave returned a non-zero exit status"
+        print("Warning: Behave returned a non-zero exit status")
         sys.exit(returncode)
 
 
@@ -209,7 +209,7 @@ def _select_from_choices(title, choice_list):
     while True:
         total = len(choice_list) - 1
         for idx, choice in enumerate(choice_list):
-            print "%d: %s" % (idx, choice)
+            print("%d: %s" % (idx, choice))
         selection = raw_input(
             "Select a choice for '%s' [0 - %d, q to quit]" % (title, total)
         )
@@ -218,7 +218,7 @@ def _select_from_choices(title, choice_list):
                 sys.exit(1)
             selection = int(selection)
         except ValueError:
-            print "Invalid Selection for '%s': '%s'" % (title, selection)
+            print("Invalid Selection for '%s': '%s'" % (title, selection))
             continue
         if idx < 0 or idx >= len(choice_list):
             continue
