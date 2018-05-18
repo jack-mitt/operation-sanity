@@ -1,6 +1,6 @@
-# Created by jmittelmeier at 4/26/18
+# Created by jmittelmeier at 5/17/18
 @wip
-Feature: Shelve Operations
+Feature: Instance Soft Reboot
 
   @persist_browser
   Scenario: Log into Atmosphere
@@ -12,19 +12,23 @@ Feature: Shelve Operations
     Given "Jack" as the persona
     When we skip the scenario outline example based on the tags
     Given a browser
-    When I go to "/application/projects"
+    When I maximize the browser's window
+    And I go to "/application/projects"
     Then I should see an element with xpath "//h2[contains(string(), '<project>')]" within 10 seconds
     When I press the element with xpath "//h2[contains(string(), '<project>')]"
     Then I should see an element with xpath "//h1[contains(string(), '<project>')]" within 10 seconds
     And I wait for 2 seconds
     And I should skip this scenario if I do not see an instance with name "<instance-name>" and provider "<provider>"
     When I press the element with xpath "//a[contains(text(), '<instance-name>')]"
-    Then I should see an element with xpath "//h2[contains(text(), 'Allocation Source')]" within 10 seconds
-    When I press the element with xpath "//span[contains(text(), 'Shelve')]"
-    And I wait for 2 seconds
-    Then I press the element with xpath "//span[contains(text(), 'Yes, shelve this instance')]"
-    And I scroll down 50 pixels
-    Then I should see an element with xpath "//span[contains(text(), 'shelving_image_uploading')]"
+    Then I should see an element with xpath "//span[contains(text(), 'Reboot')]" within 10 seconds
+    Then I wait for 2 seconds
+    When I press the element with xpath "//span[contains(text(), 'Reboot')]"
+    Then I should see an element with xpath "//span[text()='Reboot' and not(text()='Hard Reboot')]" within 10 seconds
+    Then I wait for 2 seconds
+    When I press the element with xpath "//span[text()='Reboot' and not(text()='Hard Reboot')]"
+    #Then I should see an element with xpath "//span[contains(text(), 'powering-on')]" within 10 seconds
+
+
 
 
 

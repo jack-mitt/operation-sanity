@@ -1,6 +1,6 @@
-# Created by jmittelmeier at 4/26/18
+# Created by jmittelmeier at 5/17/18
 @wip
-Feature: Shelve Operations
+Feature: Start Instance
 
   @persist_browser
   Scenario: Log into Atmosphere
@@ -19,12 +19,13 @@ Feature: Shelve Operations
     And I wait for 2 seconds
     And I should skip this scenario if I do not see an instance with name "<instance-name>" and provider "<provider>"
     When I press the element with xpath "//a[contains(text(), '<instance-name>')]"
-    Then I should see an element with xpath "//h2[contains(text(), 'Allocation Source')]" within 10 seconds
-    When I press the element with xpath "//span[contains(text(), 'Shelve')]"
-    And I wait for 2 seconds
-    Then I press the element with xpath "//span[contains(text(), 'Yes, shelve this instance')]"
-    And I scroll down 50 pixels
-    Then I should see an element with xpath "//span[contains(text(), 'shelving_image_uploading')]"
+    Then I should see an element with xpath "//span[contains(text(), 'Resume')]" within 10 seconds
+    When I press the element with xpath "//span[contains(text(), 'Resume')]"
+    Then I should see an element with xpath "//span[contains(text(), 'Yes, resume this instance')]" within 10 seconds
+    Then I wait for 2 seconds
+    When I press the element with xpath "//span[contains(text(), 'Yes, resume this instance')]"
+
+
 
 
 
