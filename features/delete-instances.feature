@@ -14,7 +14,7 @@ Feature: Delete specified running instances
     When I press the element with xpath "//h2[contains(string(), '<project>')]"
     Then I should see an element with xpath "//h1[contains(string(), '<project>')]" within 10 seconds
     And I wait for 2 seconds
-    And I should skip this scenario if I do not see an instance with name "<instance-name>" and provider "<provider>"
+    And I should skip this scenario if I do not see an instance withx name "<instance-name>" and provider "<provider>"
     When I press the checkbox for name "<instance-name>" and provider "<provider>"
     And I press the delete button
     Then I should see an element with xpath "//h1[contains(string(), 'Delete Instance')]" within 2 seconds
